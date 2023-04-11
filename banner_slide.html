@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /*glboal*/
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /*common*/
+    .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /*banner*/
+    .banner-box {
+        width: 1080px;
+        border: 1px solid #222;
+        margin: 1rem auto;
+        /* overflow: hidden; */
+    }
+
+    .banner-item {
+        min-width: 100%;
+        height: 300px;
+        background-color: rgb(117, 114, 205);
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .banner-list > li:nth-of-type(2) {
+        background-color: rgb(55, 89, 103);
+    }
+
+    .banner-list > li:nth-of-type(3) {
+        background-color: rgb(181, 121, 190);
+    }
+
+    /*shade*/
+    #shade-banner > ul {
+        width: 100%;
+        height: 300px;
+        position: relative;
+    }
+
+    #shade-banner > ul > li {
+        position: absolute;
+        transition: opacity 2s;
+    }
+
+    #shade-banner > ul > li:nth-of-type(1) {
+        z-index: 300;
+    }
+
+    #shade-banner > ul > li:nth-of-type(2) {
+        z-index: 200;
+    }
+
+    #shade-banner > ul > li:nth-of-type(3) {
+        z-index: 100;
+    }
+
+    /*sldie*/
+    #slide-banner > ul {
+        width: 100%;
+        display: flex;
+        transition: transform 2s ease-in-out;
+    }
+    #slide-banner > ul > li {transition: transform 2s ease-in-out;}
+
+    button{padding: 10px; background-color: #222; color: #fff; font-size: 16px; border-radius: 4px; cursor: pointer;}
+    button + button{left: inherit; right: 0; margin-left: 10px;}
+  </style>
+  <title>Main Banner</title>
+</head>
+<body>
+  <h2>Banner</h2>
+  <!-- slide banner-->
+  <div id="slide-banner" class="banner-box">
+      <ul class="banner-list">
+          <li class="banner-item flex-center">1</li>
+          <li class="banner-item flex-center">2</li>
+          <li class="banner-item flex-center">3</li>
+      </ul>
+      <div>
+          <button class="slide-prev-btn">prev</button>
+          <button class="slide-next-btn">next</button>
+      </div>
+  </div>
+  <marquee>안녕하세요</marquee>
+
+  <script>
+    // slidebanner
+    // 과제
+    // 무한 슬라이드, 오토 슬라이드 (선택)
+
+    /*
+      $slidebanner.style.transform = `translateX(-${$slidebannerWidth * slidebannerIndex}px)`;
+    */
+    const $slidebanner = document.querySelectorAll('#slide-banner > ul > li');
+    const $slidebannerPrevBtn = document.querySelector(".slide-prev-btn");
+    const $slidebannerNextBtn = document.querySelector(".slide-next-btn");
+    const $slidebannerWidth = $slidebanner[0].offsetWidth;
+
+    let slidebannerIndex = 0;
+
+    function bannerSlide() {
+      $slidebanner.forEach((banner, index) => {
+        if (slidebannerIndex === index) {
+          banner.style.transform = `translateX(-${$slidebannerWidth * slidebannerIndex}px)`;
+        } banner.style.transform = `translateX(-${$slidebannerWidth * slidebannerIndex}px)`;
+      });
+    }
+
+      function prevslideBanner(){
+        if(slidebannerIndex <= 0){
+          slidebannerIndex = $slidebanner.length -1;  // 마지막 index
+        } else {
+          slidebannerIndex--;
+        }
+        bannerSlide();
+      }
+      function nextslideBanner() {
+        if (slidebannerIndex >= $slidebanner.length -1){
+          slidebannerIndex = 0
+        } else{
+          slidebannerIndex++;
+        }
+        bannerSlide();
+      }
+    
+    $slidebannerPrevBtn.addEventListener("click", prevslideBanner);
+    $slidebannerNextBtn.addEventListener("click", nextslideBanner);
+
+  </script>
+</body>
+</html>
