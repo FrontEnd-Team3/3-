@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      h1 {
+        color: #5845ea;
+        text-align: center;
+      }
+      .contents {
+        margin-top: 1%;
+      }
+      .content {
+        width: 35vw;
+        border: solid 1px #000;
+        margin-bottom: 1%;
+        margin-left: 32%;
+        text-align: center;
+      }
+      a {
+        text-decoration-line: none;
+        color: #000;
+      }
+      fieldset {
+        width: 35vw;
+        border: solid 1px #000;
+        margin-left: 32%;
+        margin-bottom: 5%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>SOMETREND</h1>
+    <div class="contents"></div>
+    <fieldset>
+      <legend>게시물을 작성하세요</legend>
+      날짜 : <input type="date" name="date" required /><br />
+      제목 :
+      <input
+        type="text"
+        name="title"
+        placeholder="제목을 입력하세요."
+        required
+      /><br />
+      태그<br />
+      <input type="checkbox" id="#culture" name="tag" value="#문화" required />
+      <label for="#문화">#문화</label>
+      <input type="checkbox" id="#media" name="tag" value="#미디어" />
+      <label for="#미디어">#미디어</label>
+      <input type="checkbox" id="#contents" name="tag" value="#콘텐츠" />
+      <label for="#콘텐츠">#콘텐츠</label>
+      <input type="checkbox" id="#entertainment" name="tag" value="#연예" />
+      <label for="#연예">#연예</label>
+      <input type="checkbox" id="#trend" name="tag" value="#트렌드" />
+      <label for="#트렌드">#트렌드</label>
+      <input type="checkbox" id="#tech" name="tag" value="#테크" />
+      <label for="#테크">#테크</label>
+      <br />추가할 태그가 있다면 입력하세요:
+      <input type="text" name="addedTag" value="#" />
+      <br />
+      게시판 선택<br />
+      <input
+        type="radio"
+        id="생활변화관측소"
+        name="category"
+        value="생활변화관측소"
+        required
+      />
+      <label for="생활변화관측소">생활변화관측소</label><br />
+      <input type="radio" id="AI리포트" name="category" value="AI리포트" />
+      <label for="AI리포트">AI리포트</label><br />
+      <input type="radio" id="아쌉뷰티" name="category" value="아쌉뷰티" />
+      <label for="아쌉뷰티">아쌉뷰티</label><br />
+      배경 : <input type="image" name="bgImg" required /><br />
+      주소 : <input type="url" name="contendLink" required /><br />
+      <button type="submit">제출하기</button>
+    </fieldset>
+    <script src="./object.js"></script>
+  </body>
+</html>
