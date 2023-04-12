@@ -31,6 +31,11 @@
       #list {
         border: 1px solid #ededed;
       }
+      .change-text {
+        font-size: 1.2rem;
+        border: 3px dashed rgb(20, 20, 20);
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
@@ -96,6 +101,41 @@
         $list.innerHTML = "";
       });
       $form.addEventListener("submit", AddList);
+      // 6번 문제
+      // const $li = document.querySelectorAll(".liclass");
+
+      // $li.forEach((value, index) => {
+      //   value.addEventListener("click", () => {
+      //     if ($li[index] === value) {
+      //       value.classList.add("change-text");
+      //       console.log(index);
+      //     } else {
+      //       value.classList.remove("change-text");
+      //     }
+      //   });
+      // });
+      const $li = document.querySelectorAll(".liclass");
+
+      $li.forEach((value, index) => {
+        value.addEventListener("click", () => {
+          if (value.classList.contains("change-text")) {
+            value.classList.remove("change-text");
+          } else {
+            value.classList.add("change-text");
+          }
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!value.contains(event.target)) {
+            value.classList.remove("change-text");
+            /*
+        !value.contains(event.target) 코드는 현재 클릭된 이벤트가 $li 요소 내부에서 발생했는지를 확인하는 것입니다.
+
+        contains() 메소드는 지정된 요소의 자식 요소 중에서 인수로 전달된 요소가 있는지를 확인하는 메소드입니다. 따라서 이 코드는 $li 요소 외부에서 클릭이 발생한 경우에 contains() 메소드가 false를 반환하므로, !를 통해 true를 반환하게 됩니다. 즉, $li 요소 내부에서 클릭된 경우에는 false를 반환하여 if문을 실행하지 않지만, $li 요소 외부에서 클릭된 경우에는 true를 반환하여 if문을 실행하게 됩니다. 이를 통해 $li 요소 외부에서 클릭된 경우에는 change-text 클래스를 제거하는 역할을 수행합니다.
+*/
+          }
+        });
+      });
     </script>
   </body>
 </html>
