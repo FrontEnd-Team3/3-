@@ -25,7 +25,7 @@
     </style>
   </head>
   <body>
-    <form id="ingredient-form">
+    <form id="ingredient-form" onsubmit="addIngredient(); return false">
       <p>재료명: <input name="ingredient" /></p>
       <p>용량: <input name="weight" /></p>
       <button>추가</button>
@@ -37,7 +37,57 @@
         <th>관리</th>
       </tr>
     </table>
-    <button id="submit_button" type="button">제출</button>
+    <button id="submit_button" type="button" onclick="showIngredients()">
+      제출
+    </button>
     <ul id="ingredient-list"></ul>
   </body>
+  <script>
+    const $ingredientInput = document.querySelector("input[name='ingredient']");
+    const $weightInput = document.querySelector("input[name='weight']");
+    const $table = document.querySelector("table");
+    const $ingredientList = document.getElementById("ingredient-list");
+    const getTableIngredientsAndWeights = function () {
+      const rows = document.querySelectorAll("table tr");
+      let result = { ingredients: [], weights: [] };
+      Array.from(rows)
+        .slice(1)
+        .forEach((row) => {
+          result.ingredients.push(row.children[0].innerText);
+          result.weights.push(row.children[1].innerText);
+        });
+      return result;
+    };
+    const paintEventListener = function () {
+      const rows = document.querySelectorAll("table tr");
+      Array.from(rows)
+        .slice(1)
+        .forEach((row, i) => {
+          row.children[2].firstElementChild.addEventListener("click", () => {
+            rows[i + 1].remove();
+          });
+        });
+    };
+    const addIngredient = function () {
+      const ingredient = $ingredientInput.value;
+      const weight = $weightInput.value;
+      if (getTableIngredientsAndWeights().ingredients.includes(ingredient))
+        return alert("이미 존재하는 재료입니다.");
+      $table.innerHTML += `<tr>
+        <td>${ingredient}</td>
+        <td>${weight}</td>
+        <td><button>삭제</button></td>
+      </tr>`;
+      paintEventListener();
+    };
+
+    const showIngredients = function () {
+      const tableIngredientsAndWeights = getTableIngredientsAndWeights();
+      $ingredientList.innerHTML = null;
+      tableIngredientsAndWeights.ingredients.forEach((v, i) => {
+        $ingredientList.innerHTML += `<li>${v} : ${tableIngredientsAndWeights.weights[i]}</li>`;
+        console.log("HI");
+      });
+    };
+  </script>
 </html>

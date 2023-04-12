@@ -5,10 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer type="module" src="./level.js"></script>
+    <script defer type="module" src="./account.js"></script>
+    <!-- 몰?루 -->
     <title>Document</title>
   </head>
   <body>
-    <form id="account-send-form">
+    <form id="account-send-form" onsubmit="addAccount(); return false">
       <p>
         은행선택:
         <select id="bank-selector"></select>
@@ -23,4 +25,54 @@
       <li>성용은행 : 12-********-34</li>
     </ul>
   </body>
+  <script>
+    const BANK_LIST = {
+      1: "성용은행",
+      2: "사과은행",
+      3: "코딩은행",
+      4: "자바은행",
+      5: "파이은행",
+      6: "리엑은행",
+      7: "자스은행",
+      8: "모두은행",
+    };
+    const ACCOUNT_FORM = {
+      1: "00-00000000-00",
+      2: "00-0000000-000",
+      3: "00-000000-0000",
+      4: "00-000-0000-000",
+      5: "00-0000-000000",
+      6: "00-000000000-0",
+      7: "00-0000-000000",
+      8: "00-00-00000000",
+    };
+
+    const $bankSelector = document.getElementById("bank-selector");
+    const $accountNumberInput = document.querySelector("p > input");
+    const $accountNumbers = document.querySelector("ul");
+    const addAccount = function () {
+      const account = $accountNumberInput.value;
+      $accountNumberInput.value = null;
+      if (account.length < 12) return alert("계좌번호 길이가 12자가 아닙니다.");
+      const maskedAccount = "**" + account.slice(2, -2) + "**";
+      let result = Array.from(ACCOUNT_FORM[$bankSelector.value]);
+      let j = 0;
+      for (let i = 0; i < result.length; i++) {
+        if (result[i] === "0") result.splice(i, 1, maskedAccount[j++]);
+      }
+      $accountNumbers.innerHTML += `<li>${
+        BANK_LIST[$bankSelector.value]
+      } : ${result.join("")}</li>`;
+    };
+    $accountNumberInput.addEventListener("input", () => {
+      $accountNumberInput.value = $accountNumberInput.value.replace(
+        /[^0-9]/g,
+        ""
+      );
+    });
+
+    Object.keys(BANK_LIST).forEach((key) => {
+      $bankSelector.innerHTML += `<option value="${key}">${BANK_LIST[key]}</option>`;
+    });
+  </script>
 </html>

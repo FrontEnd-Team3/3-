@@ -28,6 +28,10 @@
         border: 1px solid #ededed;
       }
 
+      .hidden {
+        display: none;
+      }
+
       #list {
         border: 1px solid #ededed;
       }
@@ -51,19 +55,35 @@
       list안의 모든 내용이 지워져야 함
     </p>
     <h5>6.추가된 내용을 "각 각" 수정 및 삭제 수 있게 변경하시오.</h5>
-    <form id="form">
+    <form id="form" onsubmit="addNode(); return false">
       <input type="text" value="" width="600" id="list_data" name="content" />
       <button type="submit" id="send" value="show_view">저장</button>
-      <button type="reset">초기화</button>
+      <button type="button" class="reset">초기화</button>
       <p>리스트</p>
       <ul id="list">
         <li class="liclass">
           list
+          <input
+            type="text"
+            value=""
+            width="600"
+            id="list_data"
+            name="content"
+            class="hidden"
+          />
           <button type="button">수정</button>
           <button type="button">삭제</button>
         </li>
         <li class="liclass">
           list
+          <input
+            type="text"
+            value=""
+            width="600"
+            id="list_data"
+            name="content"
+            class="hidden"
+          />
           <button type="button">수정</button>
           <button type="button">삭제</button>
         </li>
@@ -81,19 +101,69 @@
     });
 
     const $list = document.querySelector("ul#list");
-    let $allLists = document.querySelectorAll("ul#list > li.liclass");
-    const repaintList = function () {
-      $list.innerHTML = Array.from($allLists)
-        .map(
-          ($liElement) => `<li class="liclass">
-        ${$liElement.firstChild.nodeValue}
+    let id = 0;
+    let $allLists = Array.from(
+      document.querySelectorAll("ul#list > li.liclass")
+    );
+    const $formInput = document.querySelector("form > input");
+    const addId = function ($node) {
+      $node.id = String(++id);
+    }; // 한번만 쓰이는 함수
+    const $resetButton = document.querySelector("form > button.reset");
+    const paintEventListener = function () {
+      $allLists.forEach(($liElement) => {
+        let $liButtons = $liElement.children;
+        $liButtons[1].addEventListener("click", () => {
+          if ($liButtons[0].classList.contains("hidden")) {
+            $liButtons[0].classList.remove("hidden");
+          } else {
+            $liElement.firstChild.nodeValue = $liButtons[0].value;
+            $liButtons[0].value = null;
+            $liButtons[0].classList.add("hidden");
+          }
+          resetAllLists();
+        });
+        $liButtons[2].addEventListener("click", () => {
+          removeNode($liElement.id);
+        });
+      });
+    };
+    const addNode = function () {
+      $list.innerHTML += `<li class="liclass" id="${++id}">
+        ${$formInput.value}
+          <input
+            type="text"
+            value=""
+            width="600"
+            id="list_data"
+            name="content"
+            class="hidden"
+          />
         <button type="button">수정</button>
         <button type="button">삭제</button>
-      </li>`
-        )
-        .join("");
-      console.log($list.innerHTML);
+      </li>`;
+      $formInput.value = null;
+      resetAllLists();
+      paintEventListener();
     };
-    repaintList();
+    const removeNode = function (nodeId) {
+      let $node = $allLists.filter(($liElement) => $liElement.id === nodeId)[0];
+      $node.remove();
+      resetAllLists();
+    };
+    const resetAllLists = function () {
+      $allLists = Array.from(document.querySelectorAll("ul#list > li.liclass"));
+    };
+    $resetButton.addEventListener("click", () => {
+      $list.innerHTML = null;
+      $formInput.value = null;
+      resetAllLists();
+    });
+    $allLists.forEach(($node) => {
+      addId($node);
+    });
+    paintEventListener();
+    // 수정
+    // 삭제
   </script>
 </html>
