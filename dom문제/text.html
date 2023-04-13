@@ -36,6 +36,17 @@
         border: 3px dashed rgb(20, 20, 20);
         display: inline-block;
       }
+      li.liclass {
+        display: flex;
+        justify-content: space-between;
+      }
+      .liclass > button {
+        margin: 1px 15px 5px 0;
+        background: #fa5a5a;
+        color: white;
+        border: none;
+        border-radius: 50px;
+      }
     </style>
   </head>
   <body>
@@ -62,8 +73,8 @@
       <button type="reset">초기화</button>
       <p>리스트</p>
       <ul id="list">
-        <li class="liclass">list</li>
-        <li class="liclass">list</li>
+        <li class="liclass"><span>list</span><button>삭제</button></li>
+        <li class="liclass"><span>list</span><button>삭제</button></li>
       </ul>
     </form>
     <script>
@@ -78,64 +89,58 @@
         }
       });
 
-      // 5번 문제
-      const $form = document.querySelector("#form");
-      const $list_data = document.querySelector("#list_data");
-      const $list = document.querySelector("#list");
-      const $button = document.querySelector("#form>button[type=reset]");
+      // 5,6번 문제
+      const $form = document.querySelector("#form"); // form태그
+      const $list_data = document.querySelector("#list_data"); // input
+      const $list = document.querySelector("#list"); //ul태그
+      const $button = document.querySelector("#form>button[type=reset]"); // 초기화 버튼
 
-      function AddList(event) {
-        const InputValue = $list_data.value;
-        const $CreateLi = document.createElement("li");
-        event.preventDefault();
-        if (InputValue !== "") {
-          $list.appendChild($CreateLi);
-          $CreateLi.innerHTML = `${InputValue}`;
-          $CreateLi.setAttribute("class", "liclass");
-        } else {
-          alert("입력하세요");
-        }
-        $list_data.value = "";
+      function deleteli(event) {
+        event.target.parentElement.remove();
       }
+
+      function Originalli() {
+        const delbutton = Array.from(
+          document.querySelectorAll("ul#list>li.liclass>button")
+        );
+        delbutton.forEach(($delbutton) => {
+          $delbutton.addEventListener("click", deleteli);
+        });
+      }
+      Originalli();
+      const AddItems = (text) => {
+        if (text !== "") {
+          const $li = document.createElement("li");
+          const $DeleteliButton = document.createElement("button");
+          const $span = document.createElement("span");
+
+          $span.innerText = text;
+          $DeleteliButton.innerText = "삭제";
+          $DeleteliButton.addEventListener("click", deleteli);
+
+          $li.appendChild($span);
+          $li.appendChild($DeleteliButton);
+          $list.appendChild($li);
+          $li.classList.add("liclass");
+        }
+      };
+      const handler = (event) => {
+        event.preventDefault();
+        AddItems($list_data.value);
+        $list_data.value = "";
+      };
       $button.addEventListener("click", () => {
         $list.innerHTML = "";
       });
-      $form.addEventListener("submit", AddList);
-      // 6번 문제
-      // const $li = document.querySelectorAll(".liclass");
+      $form.addEventListener("submit", handler);
 
-      // $li.forEach((value, index) => {
-      //   value.addEventListener("click", () => {
-      //     if ($li[index] === value) {
-      //       value.classList.add("change-text");
-      //       console.log(index);
-      //     } else {
-      //       value.classList.remove("change-text");
-      //     }
-      //   });
-      // });
-      const $li = document.querySelectorAll(".liclass");
+      /*
+     1. ul태그 안에 li태그에 에초에 span 삭제button이 만들어져야함
+     
 
-      $li.forEach((value, index) => {
-        value.addEventListener("click", () => {
-          if (value.classList.contains("change-text")) {
-            value.classList.remove("change-text");
-          } else {
-            value.classList.add("change-text");
-          }
-        });
 
-        document.addEventListener("click", (event) => {
-          if (!value.contains(event.target)) {
-            value.classList.remove("change-text");
-            /*
-        !value.contains(event.target) 코드는 현재 클릭된 이벤트가 $li 요소 내부에서 발생했는지를 확인하는 것입니다.
-
-        contains() 메소드는 지정된 요소의 자식 요소 중에서 인수로 전달된 요소가 있는지를 확인하는 메소드입니다. 따라서 이 코드는 $li 요소 외부에서 클릭이 발생한 경우에 contains() 메소드가 false를 반환하므로, !를 통해 true를 반환하게 됩니다. 즉, $li 요소 내부에서 클릭된 경우에는 false를 반환하여 if문을 실행하지 않지만, $li 요소 외부에서 클릭된 경우에는 true를 반환하여 if문을 실행하게 됩니다. 이를 통해 $li 요소 외부에서 클릭된 경우에는 change-text 클래스를 제거하는 역할을 수행합니다.
-*/
-          }
-        });
-      });
+     2. 삭제 버튼을 눌렀을때 li요소 삭제
+     */
     </script>
   </body>
 </html>
