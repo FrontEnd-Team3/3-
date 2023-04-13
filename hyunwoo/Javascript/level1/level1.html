@@ -54,7 +54,8 @@
       const account = $accountNumberInput.value;
       $accountNumberInput.value = null;
       if (account.length < 12) return alert("계좌번호 길이가 12자가 아닙니다.");
-      const maskedAccount = "**" + account.slice(2, -2) + "**";
+      const maskedAccount =
+        account.slice(0, 2) + "*".repeat(8) + account.slice(-2);
       let result = Array.from(ACCOUNT_FORM[$bankSelector.value]);
       let j = 0;
       for (let i = 0; i < result.length; i++) {
