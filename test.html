@@ -58,10 +58,13 @@
       // 공통된 부분 addList 함수로 넣어줌
       function addList() {
         const liAdd = document.createElement("li");
+        if($list_data.value !== '') {
         liAdd.classList.add('liclass');
         liAdd.textContent = $list_data.value;
-        $list.appendChild(liAdd);
-        $list_data.value = "";
+        
+          $list.appendChild(liAdd);
+          $list_data.value = "";
+        }
       }
       // 엔터키 이벤트
       $list_data.addEventListener('keydown', function(e){
@@ -76,6 +79,7 @@
         addList();
       });
       // 리셋 버튼 (추가된 요소의 삭제는 안됨.. 더 고민해봐야 됨)
+      // ul > li 태그들을 innerHTML으로 reset
       for (let itemReset of $reset){
         itemReset.addEventListener('click', (e)=>{
           e.preventDefault();
