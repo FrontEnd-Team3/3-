@@ -1,0 +1,111 @@
+<!-- level3 베스트 (희수님 코드) -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer type="module" src="./level3.js"></script>
+    <title>Document</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        border: 1px solid #999;
+      }
+
+      table th,
+      td {
+        text-align: center;
+        border: 1px solid #999;
+      }
+
+      table .thead > th {
+        width: 150px;
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="ingredient-form">
+      <p>재료명: <input name="ingredient" /></p>
+      <p>용량: <input name="weight" /></p>
+      <button id="add-button">추가</button>
+    </form>
+    <table>
+      <tr class="thead">
+        <th>재료</th>
+        <th>무게</th>
+        <th>관리</th>
+      </tr>
+      <tr>
+        <th>재료</th>
+        <th>무게</th>
+        <th>관리</th>
+      </tr>
+    </table>
+    <button id="submit_button" type="button">제출</button>
+    <ul id="ingredient-list"></ul>
+  </body>
+  <script>
+    // 1. 필요한 변수
+    // 재료명을 담을 input
+    // 무게를 담을 input
+    // 누르면 th가 추가되는 button
+    // 누르면 th가 삭제되는 button은 직접 구현해야 한다.
+    // 그니까, createElement를 버튼도 해줘야 된다는 뜻
+    // 누르면 데이터가 나타나는 제출 button
+
+    // 로직 1:
+    // 재료명 input과 용량 input에 값을 넣고 추가 button을 누르면 ,
+    // createElement를 이용해 th태그가 추가된다.
+    // 예외 상황 : 재료명이 이전과 동일하면 alert가 뜬다.
+
+    const add_button = document.getElementById("add-button");
+    const ingredient = document.getElementById("ingredient-form").ingredient;
+    const weight = document.getElementById("ingredient-form").weight;
+    const arr = [];
+    console.log(arr);
+    add_button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const add_tr = document.createElement("tr");
+      const add_th1 = document.createElement("th");
+      const add_th2 = document.createElement("th");
+      const add_th3 = document.createElement("th");
+      var butt = document.createElement("button");
+      butt.setAttribute("style", "padding : 2px 2px");
+      butt.innerText = "버튼";
+      add_th1.innerHTML = ingredient.value;
+      add_th2.innerHTML = weight.value;
+      if (arr.includes(ingredient.value)) {
+        alert("이미 존재하는 재료입니다.");
+        return;
+      }
+      arr.push(ingredient.value);
+      console.log(arr);
+      document.querySelector("table").appendChild(add_tr).appendChild(add_th1);
+      document.querySelector("table").appendChild(add_tr).appendChild(add_th2);
+      document
+        .querySelector("table")
+        .appendChild(add_tr)
+        .appendChild(add_th3)
+        .appendChild(butt);
+      butt.addEventListener("click", (e) => {
+        document.querySelector("table").appendChild(add_tr).remove(add_th1);
+      });
+    });
+
+    // 로직 2)
+    // 제출 버튼을 누르면
+    // x:x 형태로  출력된다.
+
+    const submit_button = document.getElementById("submit_button");
+    console.log(submit_button);
+
+    submit_button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const newli = document.createElement("li");
+      newli.innerHTML = `${ingredient.value} : ${weight.value}`;
+      document.body.appendChild(newli);
+    });
+  </script>
+</html>

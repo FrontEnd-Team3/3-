@@ -1,0 +1,170 @@
+<!--dom best 현우님 코드입니다~! -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      .content {
+        width: 1024px;
+      }
+
+      .disp {
+        height: 200px;
+        border: 1px solid black;
+      }
+
+      .tab_host {
+        display: flex;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .tab:hover {
+        cursor: pointer;
+      }
+
+      .tab {
+        width: 200px;
+        border: 1px solid #ededed;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      #list {
+        border: 1px solid #ededed;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      4. 아래의 입력창에 숫자가 입력되지 않도록 하고 길이 제한은 10자로 하시오.
+      <br />숫자가 입력된다면 숫자가 입력되었다고 alert로 알려주시오
+    </p>
+    <input
+      type="text"
+      id="te_input"
+      maxlength="9"
+      placeholder="글자만 입력하세요."
+    />
+
+    <p>
+      5.아래의 입력창에 입력 후 저장 버튼을 누르거나 엔터키를 누르면 입력한
+      내용이 아래의 list에 추가 되도록 하시오. <br />초기화 버튼을 누르면
+      list안의 모든 내용이 지워져야 함
+    </p>
+    <h5>6.추가된 내용을 "각 각" 수정 및 삭제 수 있게 변경하시오.</h5>
+    <form id="form" onsubmit="addNode(); return false">
+      <input type="text" value="" width="600" id="list_data" name="content" />
+      <button type="submit" id="send" value="show_view">저장</button>
+      <button type="button" class="reset">초기화</button>
+      <p>리스트</p>
+      <ul id="list">
+        <li class="liclass">
+          list
+          <input
+            type="text"
+            value=""
+            width="600"
+            id="list_data"
+            name="content"
+            class="hidden"
+          />
+          <button type="button">수정</button>
+          <button type="button">삭제</button>
+        </li>
+        <li class="liclass">
+          list
+          <input
+            type="text"
+            value=""
+            width="600"
+            id="list_data"
+            name="content"
+            class="hidden"
+          />
+          <button type="button">수정</button>
+          <button type="button">삭제</button>
+        </li>
+      </ul>
+    </form>
+  </body>
+  <script>
+    const $noNumberInput = document.querySelector("input");
+    $noNumberInput.addEventListener("input", () => {
+      if (/[0-9]/g.test($noNumberInput.value)) {
+        alert("숫자는 안돼요");
+        console.log();
+        $noNumberInput.value = $noNumberInput.value.replace(/[0-9]/g, "");
+      }
+    });
+
+    const $list = document.querySelector("ul#list");
+    let id = 0;
+    let $allLists = Array.from(
+      document.querySelectorAll("ul#list > li.liclass")
+    );
+    const $formInput = document.querySelector("form > input");
+    const addId = function ($node) {
+      $node.id = String(++id);
+    }; // 한번만 쓰이는 함수
+    const $resetButton = document.querySelector("form > button.reset");
+    const paintEventListener = function () {
+      $allLists.forEach(($liElement) => {
+        let $liButtons = $liElement.children;
+        $liButtons[1].addEventListener("click", () => {
+          if ($liButtons[0].classList.contains("hidden")) {
+            $liButtons[0].classList.remove("hidden");
+          } else {
+            $liElement.firstChild.nodeValue = $liButtons[0].value;
+            $liButtons[0].value = null;
+            $liButtons[0].classList.add("hidden");
+          }
+          resetAllLists();
+        });
+        $liButtons[2].addEventListener("click", () => {
+          removeNode($liElement.id);
+        });
+      });
+    };
+    const addNode = function () {
+      $list.innerHTML += `<li class="liclass" id="${++id}">
+        ${$formInput.value}
+          <input
+            type="text"
+            value=""
+            width="600"
+            id="list_data"
+            name="content"
+            class="hidden"
+          />
+        <button type="button">수정</button>
+        <button type="button">삭제</button>
+      </li>`;
+      $formInput.value = null;
+      resetAllLists();
+      paintEventListener();
+    };
+    const removeNode = function (nodeId) {
+      let $node = $allLists.filter(($liElement) => $liElement.id === nodeId)[0];
+      $node.remove();
+      resetAllLists();
+    };
+    const resetAllLists = function () {
+      $allLists = Array.from(document.querySelectorAll("ul#list > li.liclass"));
+    };
+    $resetButton.addEventListener("click", () => {
+      $list.innerHTML = null;
+      $formInput.value = null;
+      resetAllLists();
+    });
+    $allLists.forEach(($node) => {
+      addId($node);
+    });
+    paintEventListener();
+    // 수정
+    // 삭제
+  </script>
+</html>
