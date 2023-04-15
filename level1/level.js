@@ -10,19 +10,32 @@ function AddOptionList() {
   for (objectKey in BANK_LIST) {
     const $CreateOption = document.createElement("option");
     $CreateOption.innerText = BANK_LIST[objectKey];
+    // $CreateOption.value = objectKey;
     $select.appendChild($CreateOption);
   }
 }
 AddOptionList();
 
+let banknumber;
+function GetBankNumber(index) {
+  banknumber = ACCOUNT_FORM[index];
+  console.log(banknumber);
+}
+
+$select.addEventListener("change", () => {
+  GetBankNumber($select.value);
+});
+
 const $form = document.getElementById("account-send-form");
 const $input = document.getElementById("account-input");
 const $ul = document.getElementById("account-list");
+const $option = document.querySelectorAll("option");
 
 const createli = function (text) {
   if (text.length - 7 !== 12) {
     return alert("숫자 다시 입력해요");
   }
+  console.log(text.length);
   if (text !== "") {
     const $li = document.createElement("li");
     $ul.appendChild($li);
