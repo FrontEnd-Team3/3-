@@ -28,18 +28,53 @@ console.log(ACCOUNT_FORM);
 여기까지 해보고 selectbox박스에 들어가는지 한번 확인해보기 !
 */
 const bankList = {...BANK_LIST};
-console.log(bankList);
+const accountForm = {...ACCOUNT_FORM};
 
-let newbankList = Object.keys(bankList).map(item => bankList[item]);
+// 1. 은행선택 option 추가
+const newbankList = Object.keys(bankList).map(item => bankList[item]);
 console.log(newbankList);
 
 const select = document.querySelector("#bank-selector");
-const option = document.createElement("option");
-console.log(option);
-
-for (let bankOption of newbankList){
-  console.log(bankOption);
-  option.textContent = bankOption;
-  option.value = bankOption;
-  select.append(option);
+const opt = document.querySelector("#bank-selector");
+function optionList(){
+  for (let bankOption of newbankList){
+    const option = document.createElement("option");
+    option.textContent = bankOption;
+    option.value = bankOption;
+    select.append(option);
+  }
 }
+optionList();
+
+
+// 2. 계좌입력 및 파싱하기
+const newAccountFrom = Object.keys(accountForm).map(item => accountForm[item]);
+console.log(newAccountFrom);
+const $input = document.getElementById('account-input');
+const $list = document.getElementById('account-list');
+const btn = document.querySelector('button');
+
+// 공통된 부분 addList 함수로 넣어줌
+function addList() {
+  const liAdd = document.createElement("li");
+  // 12자리 안넘을 시 alert 처리
+  if($input.value.length < 12) {
+    alert("12자리를 입력해주세요.");
+  } else {
+    liAdd.textContent = `${opt.value} : ${$input.value}`;
+    $list.appendChild(liAdd);
+    $input.value = "";
+  }
+}
+// 엔터키 이벤트
+$input.addEventListener('keydown', function(e){
+  if(e.keyCode === 13) {
+    e.preventDefault();
+    addList();
+  }
+});
+// 저장 버튼 클릭 이벤트
+btn.addEventListener('click', (e)=>{
+  e.preventDefault();
+  addList();
+});
