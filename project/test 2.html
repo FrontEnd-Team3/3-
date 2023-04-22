@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      .content {
+        width: 1024px;
+      }
+
+      .disp {
+        height: 200px;
+        border: 1px solid black;
+      }
+
+      .tab_host {
+        display: flex;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .tab:hover {
+        cursor: pointer;
+      }
+
+      .tab {
+        width: 200px;
+        border: 1px solid #ededed;
+      }
+
+      #list {
+        border: 1px solid #ededed;
+      }
+    </style>
+  </head>
+  <body>
+      <p>
+        4. 아래의 입력창에 숫자가 입력되지 않도록 하고 길이 제한은 10자로 하시오. <br />숫자가 입력된다면 숫자가 입력되었다고 alert로
+        알려주시오
+      </p>
+      <input type="text" id="te_input" maxlength="10" placeholder="글자만 입력하세요." />
+
+      <p>
+        5.아래의 입력창에 입력 후 저장 버튼을 누르거나 엔터키를 누르면 입력한 내용이 아래의 list에 추가 되도록 하시오. <br />초기화 버튼을
+        누르면 list안의 모든 내용이 지워져야 함
+      </p>
+      <h5>6.추가된 내용을 "각 각" 수정 및 삭제 수 있게 변경하시오.</h5>
+      <form id="form">
+        <input type="text" value="" width="600" id="list_data" name="content" />
+        <button type="submit" id="send" value="show_view">저장</button>
+        <button type="reset">초기화</button>
+        <p>리스트</p>
+        <ul id="list">
+          <li class="liclass">list</li>
+          <li class="liclass">list</li>
+        </ul>
+      </form>
+    </div>
+    <script>
+      //4번
+      //1. 인풋의 입력값이 생겼을때 이벤트 발생
+      //2. 인풋의 입력값에 숫자가 들어갔을때 alert로 안내
+      //3. 10이상 초과해서 입력되지않도록 방지
+
+      document.querySelector('#te_input').addEventListener('input', function (){
+        let $inputValue = document.querySelector('#te_input').value
+        if(/[0-9]/.test($inputValue)){
+          alert('숫자 빼셈')
+        }
+      })
+
+      //5번
+      //1. 저장버튼을 눌렀을때 input에 value가 있으면 그 value의 입력값이 저장
+      //2. 입력값은 ul에 `<li class="liclass">입력값</li>`인 html로 추가된다.
+      //3. 초기화 버튼을 누르면 ul에 li들이 전부 remove
+      let $form = document.querySelectorAll('#form button')
+
+      $form[0].addEventListener('click', function(){
+        let $listInputValue = document.querySelector('#list_data').value
+
+        event.stopPropagation()
+        event.preventDefault();
+        if($listInputValue !== ""){
+          let listTem = `<li class="liclass">${$listInputValue}
+                          <button class="sujung">수정</button>
+                          <button class="sakje">삭제</button>
+                        </li>`
+          let $list = document.querySelector('#list')
+          $list.insertAdjacentHTML('beforeend', listTem)
+        } 
+
+        
+        // let $sujungBtn = $list.lastElementChild.querySelector('.sujung')
+        // $sujungBtn.addEventListener('click', function(event){
+        //   let $li = event.target.parentNode
+        //   let $liValue = $li.firstChild.nodeValue.trim()
+        //   let $newListInputValue = prompt("수정할 값을 입력하세요.", $liValue)
+          
+        //   if($newListInputValue !== ""){
+        //     $li.firstChild.nodeValue = $newListInputValue
+        //   }
+    })
+
+    // 삭제 버튼 이벤트 핸들러 등록
+    let $sakjeBtn = $list.lastElementChild.querySelector('.sakje')
+    $sakjeBtn.addEventListener('click', function(event){
+      let $li = event.target.parentNode
+      $li.parentNode.removeChild($li)
+    })
+      
+      
+
+
+
+    
+
+      
+
+
+    </script>
+  </body>
+</html>

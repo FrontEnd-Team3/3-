@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+    <style>
+        
+        #tableList {
+            width: 95%;
+            border: 3px solid black;
+            margin-left: 3%;
+            margin-top: 2%;
+        }
+
+        #tableList td {
+            border: 1px solid black;
+        }
+        .postTitle:hover {
+            background-color: rgb(197, 197, 197);
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>{JSON}Placeholder</h1>
+    <table id="tableList"></table>
+    <script>
+        const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
+        const COMMENTS_URL = 'https://jsonplaceholder.typicode.com/comments';
+
+        console.log(POSTS_URL)
+        console.log(COMMENTS_URL)
+
+        const loadPosts = async () => {
+            try{
+                const result = await axios.get(POSTS_URL)
+                console.log(result)
+                const twenty_result = result.data.slice(0,20)
+                console.log(twenty_result)
+                const $table = document.querySelector("table")
+
+                for(let post of twenty_result){
+                    const tr = document.createElement('tr')
+                    tr.innerHTML = `
+                        <td class="postId">ID: ${post.id}</td>
+                        <td class="postTitle">TITLE: ${post.title}</td>
+                        <td class="postBody">${post.body}</td>
+                    `
+                    $table.append(tr)
+                    const $post1 = document.querySelectorAll('.postTitle').item(0);
+                    console.log($post1);
+                    $post1.addEventListener('click', function(){
+                        window.location.href = postUrl;
+                    })
+                }
+            }catch (error) {
+                console.log(error);
+            }
+        }
+
+        loadPosts();
+
+        const postUrl = `http://127.0.0.1:5500/project/detail.html`
+        const currentUrl = window.location.href;
+        const searchParams = new URLSearchParams(window.location.search);
+        const history = searchParams.get("history") || [];
+        history.push(currentUrl);
+        searchParams.set("history", JSON.stringify(history));
+        window.location.search = searchParams.toString();
+        
+        
+        
+    </script>
+    
+</body>
+</html>
